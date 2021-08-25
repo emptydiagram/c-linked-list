@@ -27,6 +27,33 @@ struct linked_list_int_node* create_node_from_value(int val)
   return newNode;
 }
 
+void destroy_node(struct linked_list_int_node *node)
+{
+  if (node == NULL)
+  {
+    return;
+  }
+
+  struct linked_list_int_node *curr = node;
+  struct linked_list_int_node *tmp;
+  while  (curr != NULL)
+  {
+    tmp = curr->next;
+    free(curr);
+    curr = tmp;
+  }
+}
+
+void destroy_list (struct linked_list_int **lst) {
+  if (lst == NULL) return;
+  if ((*lst)->first != NULL)
+  {
+    destroy_node((*lst)->first);
+  }
+  free(*lst);
+  *lst = NULL;
+}
+
 struct linked_list_int* add_node_to_empty_list(struct linked_list_int *lst, int val)
 {
   if (lst == NULL || lst->first != NULL || lst->last != NULL)
@@ -110,6 +137,7 @@ struct linked_list_int* add_to_list(struct linked_list_int* lst, int val, bool a
 
 void print_linked_list(struct linked_list_int *lst)
 {
+  // printf("{%ld} : ", lst->size);
   struct linked_list_int_node *curr = lst->first;
   printf("( ");
   while (curr != NULL)
@@ -131,4 +159,7 @@ int main(void)
   print_linked_list(lst);
   add_to_list(lst, 8, false);
   print_linked_list(lst);
+  printf("before destruction, lst = %ld\n", (unsigned long)lst);
+  destroy_list(&lst);
+  printf("now lst = %ld\n", (unsigned long)lst);
 }
