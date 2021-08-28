@@ -162,4 +162,5 @@ int main(void)
   printf("before destruction, lst = %ld\n", (unsigned long)lst);
   destroy_list(&lst);
   printf("now lst = %ld\n", (unsigned long)lst);
+  fflush(stdout);
 }
