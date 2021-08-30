@@ -78,7 +78,6 @@ struct linked_list_int* add_node_to_empty_list(struct linked_list_int *lst, int 
 
 struct linked_list_int* create_list_from_value(int val)
 {
-  // printf("\ncreating list from value:\n %d", val);
   struct linked_list_int *newLL = CREATE(struct linked_list_int);
   if (newLL == NULL)
   {
@@ -151,6 +150,33 @@ void print_linked_list(struct linked_list_int *lst)
   printf(")\n");
 }
 
+// TODO: take (struct linked_list_int **lst), return linked_list_node?
+int remove_from_start_of_list(struct linked_list_int *lst)
+{
+  if (lst == NULL || lst->first == NULL || lst->last == NULL)
+  {
+    return 0;
+  }
+
+  int node_value = lst->first->value;
+  if (lst->size == 1)
+  {
+    // singleton, first == last
+    free(lst->first);
+    lst->first = NULL;
+    lst->last = NULL;
+    lst->size = 0;
+  } else
+  {
+    // size > 1, so first != last
+    struct linked_list_int_node *second = lst->first->next;
+    DESTROY(lst->first);
+    lst->first = second;
+  }
+  return node_value;
+
+}
+
 int main(void)
 {
   printf("hi\n");
@@ -161,6 +187,10 @@ int main(void)
   add_to_list(lst, 7, false);
   print_linked_list(lst);
   add_to_list(lst, 8, false);
+  print_linked_list(lst);
+  remove_from_start_of_list(lst);
+  print_linked_list(lst);
+  remove_from_start_of_list(lst);
   print_linked_list(lst);
   printf("before destruction, lst = %ld\n", (unsigned long)lst);
   destroy_list(&lst);
