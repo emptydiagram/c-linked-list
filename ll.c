@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define CREATE(type)  (type*) malloc(sizeof(type));
+#define CREATE_N(type, N)  (type*) malloc(N * sizeof(type));
+#define DESTROY(pointer)  free(pointer); pointer = NULL;
+
 struct linked_list_int
 {
   struct linked_list_int_node *first;
@@ -17,7 +21,7 @@ struct linked_list_int_node
 
 struct linked_list_int_node* create_node_from_value(int val)
 {
-  struct linked_list_int_node *newNode = malloc(sizeof(struct linked_list_int_node));
+  struct linked_list_int_node *newNode = CREATE(struct linked_list_int_node);
   if (newNode == NULL)
   {
     return NULL;
@@ -50,8 +54,7 @@ void destroy_list (struct linked_list_int **lst) {
   {
     destroy_node((*lst)->first);
   }
-  free(*lst);
-  *lst = NULL;
+  DESTROY(*lst)
 }
 
 struct linked_list_int* add_node_to_empty_list(struct linked_list_int *lst, int val)
@@ -76,7 +79,7 @@ struct linked_list_int* add_node_to_empty_list(struct linked_list_int *lst, int 
 struct linked_list_int* create_list_from_value(int val)
 {
   // printf("\ncreating list from value:\n %d", val);
-  struct linked_list_int *newLL = malloc(sizeof(struct linked_list_int));
+  struct linked_list_int *newLL = CREATE(struct linked_list_int);
   if (newLL == NULL)
   {
     printf("Error creating linked list\n");
